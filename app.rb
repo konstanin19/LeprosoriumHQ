@@ -7,6 +7,9 @@ require 'IRB'
 set :database, "sqlite3:leprosorium.db"
  
 class Post <ActiveRecord::Base
+	validates :name, presence: true
+	validates :datestamp, presence: true
+	validates :content, presence: true
 end
 
 class Comment < ActiveRecord::Base
@@ -22,21 +25,20 @@ get '/' do
 end
 
 get '/new' do
-  erb :new
+	@p = Post.new
+erb :new
 end
 
 post '/new' do
-        content = params[:content]
-        youname = params[:name]
-        if content.length <= 0
-                @error = 'Type post text'
-                return erb :new
-        end
+    @p = Post.new params[:post]
+    @p.save
 
-        if youname.length <= 0
-                @error = 'Type you name'
-                return erb :new
-        end
+    if @p.save
+    erb "<p>Thank you!</p>"
+    else
+ 	@error = @p.errors.full_messages.first
+erb :new
+ 	end    
 
        # @db.execute 'insert into Posts (youname, content, created_date) values (?,?,datetime())',[youname, content]
         redirect to '/'
