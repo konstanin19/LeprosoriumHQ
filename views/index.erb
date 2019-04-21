@@ -1,0 +1,23 @@
+<h2>Последние посты:</h2>
+<br />
+
+<% @posts.each do |post| %>
+
+<p>
+	<%= post['youname'] %>
+	<br />
+	<br />
+</p>
+
+<p>
+	<%= post['content'] %>
+	<br />
+	<br />
+	Addet at <%= post['created_date'] %>
+<br />
+<br />
+<a href="/details/<%= post['Id'] %>">Comments</a>
+</p>
+<hr />
+<% end %>
+
